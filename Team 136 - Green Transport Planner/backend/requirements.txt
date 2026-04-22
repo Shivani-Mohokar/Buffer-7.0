@@ -1,0 +1,9 @@
+flask==3.0.3
+flask-cors==4.0.1
+flask-jwt-extended==4.6.0
+flask-pymongo==2.3.0
+pymongo==4.6.3
+openai==1.30.0
+requests==2.32.3
+python-dotenv==1.0.1
+dnspython==2.6.1

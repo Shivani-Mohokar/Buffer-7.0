@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Transport Planner 🌿</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<!-- Particle Background -->
+<div class="particles" id="particles"></div>
+
+<!-- Top Nav -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">
+    <span class="logo-icon">🌿</span>
+    <span class="logo-text">GreenMove</span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="#home" class="nav-link active" data-page="home">Home</a>
+    <a href="#route" class="nav-link" data-page="route">Routes</a>
+    <a href="#map" class="nav-link" data-page="map">Live Map</a>
+    <a href="#dashboard" class="nav-link" data-page="dashboard">Dashboard</a>
+    <a href="#rewards" class="nav-link" data-page="rewards">Rewards</a>
+    <a href="#community" class="nav-link" data-page="community">Community</a>
+    <a href="#admin" class="nav-link" data-page="admin">Admin</a>
+  </div>
+  <div class="nav-right">
+    <button class="chat-btn" onclick="toggleChat()">🤖 AI Chat</button>
+    <div class="user-menu" id="userMenu">
+      <button class="auth-btn" onclick="showPage('login')">Login</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleNav()">☰</button>
+</nav>
+
+<!-- ═══════════════════════════════ PAGES ════════════════════════════════════ -->
+
+<!-- HOME PAGE -->
+<section class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🌍 Eco-Smart Travel Platform</div>
+      <h1 class="hero-title">Travel <span class="gradient-text">Greener.</span><br>Live Better.</h1>
+      <p class="hero-sub">Plan eco-friendly routes, track your carbon savings, earn rewards for sustainable choices, and join a community that cares about the planet.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('route')">🗺️ Plan Eco Route</button>
+        <button class="btn-secondary" onclick="showPage('map')">📍 Live Map</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill">🚲 <strong id="statTrips">12,847</strong> Green Trips</div>
+        <div class="stat-pill">🌱 <strong id="statCO2">4.2T</strong> CO₂ Saved</div>
+        <div class="stat-pill">⭐ <strong id="statUsers">3,291</strong> Eco Warriors</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="globe-ring ring1"></div>
+      <div class="globe-ring ring2"></div>
+      <div class="globe-ring ring3"></div>
+      <div class="hero-emoji-float">🌿</div>
+      <div class="hero-cards">
+        <div class="floating-card card-a">
+          <span>🚲 Cycling Route</span>
+          <strong>-94% CO₂</strong>
+        </div>
+        <div class="floating-card card-b">
+          <span>🏆 You Earned</span>
+          <strong>+150 pts</strong>
+        </div>
+        <div class="floating-card card-c">
+          <span>🌳 Trees Saved</span>
+          <strong>47 this month</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="section-header">
+    <h2>Everything You Need for Green Travel</h2>
+    <p>A complete platform for sustainable urban mobility</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card" onclick="showPage('route')">
+      <div class="feat-icon">🗺️</div>
+      <h3>Eco Route Finder</h3>
+      <p>Compare greenest, fastest & cheapest routes with real CO₂ data</p>
+      <span class="feat-tag">TomTom API</span>
+    </div>
+    <div class="feature-card" onclick="showPage('map')">
+      <div class="feat-icon">📍</div>
+      <h3>Live Dashboard</h3>
+      <p>Real-time map with EV stations, bus stops & traffic zones</p>
+      <span class="feat-tag">Geolocation</span>
+    </div>
+    <div class="feature-card" onclick="showPage('dashboard')">
+      <div class="feat-icon">📊</div>
+      <h3>Personal Analytics</h3>
+      <p>Track CO₂ savings, trips & weekly eco performance charts</p>
+      <span class="feat-tag">Charts</span>
+    </div>
+    <div class="feature-card" onclick="showPage('rewards')">
+      <div class="feat-icon">🏆</div>
+      <h3>Gamification</h3>
+      <p>Earn badges, level up from Bronze to Platinum, redeem rewards</p>
+      <span class="feat-tag">Points System</span>
+    </div>
+    <div class="feature-card" onclick="showPage('community')">
+      <div class="feat-icon">👥</div>
+      <h3>Community Hub</h3>
+      <p>Share tips, carpools, leaderboards & green challenges</p>
+      <span class="feat-tag">Social</span>
+    </div>
+    <div class="feature-card" onclick="toggleChat()">
+      <div class="feat-icon">🤖</div>
+      <h3>AI GreenBot</h3>
+      <p>Smart chatbot for route advice, eco tips & carbon savings</p>
+      <span class="feat-tag">OpenAI</span>
+    </div>
+  </div>
+
+  <!-- How Geolocation Works -->
+  <div class="info-section">
+    <h2>📡 How Location Detection Works</h2>
+    <div class="geo-cards">
+      <div class="geo-card">
+        <div class="geo-icon">📱</div>
+        <h3>Mobile Device</h3>
+        <ul>
+          <li>🛰️ GPS satellite triangulation</li>
+          <li>📶 Cell tower positioning</li>
+          <li>📡 WiFi network mapping</li>
+          <li>⚡ Accuracy: 3–10 meters</li>
+        </ul>
+        <p class="geo-note">Browser requests GPS permission. Grants instant precise location.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-icon">💻</div>
+        <h3>Laptop / Desktop</h3>
+        <ul>
+          <li>📡 WiFi network geolocation</li>
+          <li>🌐 IP address mapping</li>
+          <li>🏢 Browser location API</li>
+          <li>⚡ Accuracy: 50–500 meters</li>
+        </ul>
+        <p class="geo-note">Uses WiFi signals or IP. Less precise but still useful for routing.</p>
+      </div>
+      <div class="geo-card">
+        <div class="geo-icon">🔒</div>
+        <h3>Permission Denied?</h3>
+        <ul>
+          <li>✍️ Manual address entry</li>
+          <li>🔍 Address search & geocoding</li>
+          <li>🌍 IP-based fallback</li>
+          <li>📌 Map click to set location</li>
+        </ul>
+        <p class="geo-note">Multiple fallbacks ensure you always get route planning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROUTE PAGE -->
+<section class="page" id="page-route">
+  <div class="page-header">
+    <h1>🗺️ Eco Route Finder</h1>
+    <p>Find the greenest path to your destination</p>
+  </div>
+
+  <div class="route-container">
+    <div class="route-form">
+      <div class="location-field">
+        <label>📍 Your Location</label>
+        <div class="input-row">
+          <input type="text" id="sourceInput" placeholder="Getting your location..." class="loc-input">
+          <button class="loc-btn" onclick="getCurrentLocation()" title="Use GPS">🎯</button>
+        </div>
+        <div class="location-status" id="locationStatus">
+          <span class="status-dot"></span>
+          <span id="statusText">Requesting location...</span>
+        </div>
+      </div>
+
+      <div class="route-swap">⇅</div>
+
+      <div class="location-field">
+        <label>🏁 Destination</label>
+        <input type="text" id="destInput" placeholder="Enter destination address..." class="loc-input">
+      </div>
+
+      <div class="transport-modes">
+        <label>Preferred Mode</label>
+        <div class="mode-chips">
+          <button class="mode-chip active" data-mode="all">All Routes</button>
+          <button class="mode-chip" data-mode="cycling">🚲 Cycling</button>
+          <button class="mode-chip" data-mode="transit">🚌 Transit</button>
+          <button class="mode-chip" data-mode="driving">🚗 Driving</button>
+        </div>
+      </div>
+
+      <button class="search-route-btn" onclick="searchRoutes()">
+        <span>🔍 Find Eco Routes</span>
+      </button>
+    </div>
+
+    <div class="routes-result" id="routesResult">
+      <div class="route-placeholder">
+        <div class="placeholder-icon">🌿</div>
+        <p>Enter your destination to see eco-friendly route options</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="routeMapContainer" class="route-map-container" style="display:none">
+    <div id="routeMap" style="height:400px;border-radius:16px;"></div>
+  </div>
+</section>
+
+<!-- MAP PAGE -->
+<section class="page" id="page-map">
+  <div class="map-toolbar">
+    <div class="map-title">📍 Live Location Dashboard</div>
+    <div class="map-controls">
+      <button class="map-ctrl-btn active" onclick="filterNearby('EV_STATION',this)" title="EV Stations">⚡ EV</button>
+      <button class="map-ctrl-btn" onclick="filterNearby('BUS_STOP',this)" title="Bus Stops">🚌 Bus</button>
+      <button class="map-ctrl-btn" onclick="filterNearby('METRO_STATION',this)" title="Metro">🚇 Metro</button>
+      <button class="map-ctrl-btn" onclick="filterNearby('BICYCLE_RENTAL',this)" title="Bike Rental">🚲 Bike</button>
+      <button class="map-ctrl-btn" onclick="centerOnUser()">🎯 Me</button>
+    </div>
+  </div>
+  <div id="liveMap" style="height:calc(100vh - 120px);"></div>
+  <div class="map-info-panel" id="mapInfoPanel">
+    <div class="map-info-inner">
+      <div class="live-stat"><span>📍</span><div><small>Location</small><strong id="liveLocText">Getting GPS...</strong></div></div>
+      <div class="live-stat"><span>🚦</span><div><small>Traffic</small><strong id="liveTrafficText">Loading...</strong></div></div>
+      <div class="live-stat"><span>⚡</span><div><small>Nearest EV</small><strong id="nearestEV">Searching...</strong></div></div>
+      <div class="live-stat"><span>🌡️</span><div><small>Air Quality</small><strong>Good 🟢</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PAGE -->
+<section class="page" id="page-dashboard">
+  <div class="page-header">
+    <h1>📊 Personal Eco Dashboard</h1>
+    <p>Your sustainability journey at a glance</p>
+  </div>
+  
+  <div class="dash-auth-guard" id="dashAuthGuard">
+    <div class="auth-prompt">
+      <div style="font-size:3rem">🔐</div>
+      <h3>Sign in to see your dashboard</h3>
+      <button class="btn-primary" onclick="showPage('login')">Login / Register</button>
+    </div>
+  </div>
+
+  <div class="dashboard-content" id="dashContent" style="display:none">
+    <div class="user-hero-card">
+      <div class="user-avatar-big" id="dashAvatar">🌿</div>
+      <div class="user-hero-info">
+        <h2 id="dashName">User Name</h2>
+        <div class="level-badge" id="dashLevel">🥉 Bronze</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar" id="xpBar" style="width:30%"></div>
+        </div>
+        <small id="xpText">300 / 500 pts to Silver</small>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card green"><div class="stat-num" id="dTotalTrips">0</div><div class="stat-lbl">Total Trips</div><div class="stat-icon">🚲</div></div>
+      <div class="stat-card blue"><div class="stat-num" id="dCO2Saved">0</div><div class="stat-lbl">kg CO₂ Saved</div><div class="stat-icon">🌱</div></div>
+      <div class="stat-card gold"><div class="stat-num" id="dPoints">0</div><div class="stat-lbl">Green Points</div><div class="stat-icon">⭐</div></div>
+      <div class="stat-card purple"><div class="stat-num" id="dStreak">0</div><div class="stat-lbl">Day Streak</div><div class="stat-icon">🔥</div></div>
+    </div>
+
+    <div class="dash-charts">
+      <div class="chart-card">
+        <h3>📅 Weekly CO₂ Saved (kg)</h3>
+        <canvas id="weeklyChart" height="120"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>🚗 Travel Mode Split</h3>
+        <canvas id="modeChart" height="120"></canvas>
+      </div>
+    </div>
+
+    <div class="badges-section">
+      <h3>🏅 Your Badges</h3>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+
+    <div class="recent-trips">
+      <h3>🗺️ Recent Trips</h3>
+      <div class="trips-list" id="tripsList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REWARDS PAGE -->
+<section class="page" id="page-rewards">
+  <div class="page-header">
+    <h1>🏆 Rewards & Gamification</h1>
+    <p>Earn points, unlock badges, redeem rewards</p>
+  </div>
+
+  <div class="rewards-header-card">
+    <div class="points-display">
+      <div class="pts-big" id="rewardPoints">0</div>
+      <div class="pts-lbl">Green Points</div>
+    </div>
+    <div class="level-display">
+      <div class="level-tiers">
+        <div class="tier active" id="tierBronze">🥉 Bronze<br><small>0+</small></div>
+        <div class="tier" id="tierSilver">🥈 Silver<br><small>500+</small></div>
+        <div class="tier" id="tierGold">🥇 Gold<br><small>2000+</small></div>
+        <div class="tier" id="tierPlatinum">💎 Platinum<br><small>5000+</small></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="section-title">🎖️ Achievement Badges</h3>
+  <div class="all-badges">
+    <div class="badge-item locked" id="badge-first"><div class="badge-ico">🌱</div><div>First Green Trip</div></div>
+    <div class="badge-item locked" id="badge-streak"><div class="badge-ico">🔥</div><div>7 Day Streak</div></div>
+    <div class="badge-item locked" id="badge-co2"><div class="badge-ico">🌍</div><div>CO2 Saver</div></div>
+    <div class="badge-item locked" id="badge-hero"><div class="badge-ico">🦸</div><div>Community Hero</div></div>
+    <div class="badge-item locked" id="badge-cycle"><div class="badge-ico">🚲</div><div>Cycle Champion</div></div>
+    <div class="badge-item locked" id="badge-transit"><div class="badge-ico">🚌</div><div>Transit Master</div></div>
+  </div>
+
+  <h3 class="section-title">🎁 Redeem Rewards</h3>
+  <div class="rewards-catalog" id="rewardsCatalog"></div>
+
+  <h3 class="section-title">🏁 Active Challenges</h3>
+  <div class="challenges-list">
+    <div class="challenge-card">
+      <div class="chal-icon">🚗</div>
+      <div class="chal-info">
+        <h4>No Car Friday</h4>
+        <p>Use public transport or cycle every Friday this month</p>
+        <div class="chal-progress"><div class="chal-bar" style="width:60%"></div></div>
+        <small>3/5 Fridays completed • +200 pts</small>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="chal-icon">🚲</div>
+      <div class="chal-info">
+        <h4>Cycle Week</h4>
+        <p>Cycle to work or school for 5 consecutive days</p>
+        <div class="chal-progress"><div class="chal-bar" style="width:40%"></div></div>
+        <small>2/5 days completed • +300 pts</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY PAGE -->
+<section class="page" id="page-community">
+  <div class="page-header">
+    <h1>👥 Community Hub</h1>
+    <p>Share tips, find carpools, join green challenges</p>
+  </div>
+
+  <div class="community-layout">
+    <div class="community-main">
+      <div class="post-composer" id="postComposer">
+        <div class="composer-types">
+          <button class="type-btn active" data-type="tip">💡 Tip</button>
+          <button class="type-btn" data-type="carpool">🚗 Carpool</button>
+          <button class="type-btn" data-type="alert">⚠️ Alert</button>
+          <button class="type-btn" data-type="challenge">🏁 Challenge</button>
+        </div>
+        <textarea id="postContent" placeholder="Share an eco travel tip, carpool request, or transport alert..." rows="3"></textarea>
+        <button class="post-btn" onclick="submitPost()">🌿 Share with Community</button>
+      </div>
+
+      <div class="posts-feed" id="postsFeed">
+        <div class="loading-posts">Loading community posts...</div>
+      </div>
+    </div>
+
+    <div class="community-sidebar">
+      <div class="leaderboard-card">
+        <h3>🏆 Green Leaderboard</h3>
+        <div class="leader-list" id="leaderList"></div>
+      </div>
+
+      <div class="active-challenges-card">
+        <h3>🌟 This Week's Challenge</h3>
+        <div class="mini-challenge">
+          <div style="font-size:2rem">🚴</div>
+          <h4>Cycle Week 2024</h4>
+          <p>Cycle instead of drive for 5 days</p>
+          <button class="join-btn" onclick="joinChallenge()">Join Challenge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PAGE -->
+<section class="page" id="page-admin">
+  <div class="page-header">
+    <h1>⚙️ Admin Panel</h1>
+    <p>Platform statistics and management</p>
+  </div>
+  <div class="admin-stats" id="adminStats">
+    <div class="admin-stat-card"><div class="a-num" id="aUsers">—</div><div>Total Users</div></div>
+    <div class="admin-stat-card"><div class="a-num" id="aTrips">—</div><div>Total Trips</div></div>
+    <div class="admin-stat-card"><div class="a-num" id="aCO2">—</div><div>kg CO₂ Saved</div></div>
+  </div>
+  <div class="admin-table-wrap">
+    <h3>Recent Users</h3>
+    <table class="admin-table" id="adminUsersTable">
+      <thead><tr><th>Name</th><th>Email</th><th>Points</th><th>Level</th><th>Joined</th></tr></thead>
+      <tbody id="adminUsersBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LOGIN PAGE -->
+<section class="page" id="page-login">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">🌿</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="loginTab" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" id="registerTab" onclick="switchAuthTab('register')">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" class="form-input">
+        </div>
+        <div class="auth-error" id="loginError"></div>
+        <button class="auth-submit" onclick="doLogin()">🌿 Login</button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" style="display:none">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Green Explorer" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="••••••••" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Choose Avatar</label>
+          <div class="avatar-picker">
+            <span class="av-opt active" onclick="selectAvatar('🌿')">🌿</span>
+            <span class="av-opt" onclick="selectAvatar('🌱')">🌱</span>
+            <span class="av-opt" onclick="selectAvatar('🍃')">🍃</span>
+            <span class="av-opt" onclick="selectAvatar('🦋')">🦋</span>
+            <span class="av-opt" onclick="selectAvatar('🐝')">🐝</span>
+            <span class="av-opt" onclick="selectAvatar('🌻')">🌻</span>
+          </div>
+        </div>
+        <div class="auth-error" id="regError"></div>
+        <button class="auth-submit" onclick="doRegister()">🌿 Create Account</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ AI CHATBOT ══════════════════════════════════════ -->
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-header">
+    <div class="chat-bot-info">
+      <div class="bot-avatar">🤖</div>
+      <div><strong>GreenBot</strong><br><small>Your eco travel AI</small></div>
+    </div>
+    <button onclick="toggleChat()" class="chat-close">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">
+      <div class="msg-avatar">🤖</div>
+      <div class="msg-bubble">👋 Hi! I'm GreenBot, your eco travel assistant! Ask me about:<br>• Best eco routes 🗺️<br>• Carbon saving tips 🌱<br>• Nearby EV charging ⚡<br>• Public transport options 🚌</div>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask GreenBot..." onkeydown="if(event.key==='Enter') sendChat()">
+    <button onclick="sendChat()" class="chat-send">➤</button>
+  </div>
+</div>
+
+<!-- Notifications -->
+<div class="notification-container" id="notifContainer"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
