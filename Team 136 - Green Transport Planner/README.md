@@ -45,8 +45,9 @@ Green Transport Planner is a full-stack eco-friendly travel platform that sugges
 - Priority Queue (for shortest/efficient path calculation)
 
 ## Video Demo
-(Add your Google Drive link here with public access)
+https://drive.google.com/drive/folders/1spsL3PgRmffkek_1D_Qs0GtshRpwQSEi?usp=sharing
 
 ## Team Members
-- Shivani
-- (Add others)
+- Shivani Mohokar(Leader)
+- Aarya Kulkarni
+- Devika Prabhu
